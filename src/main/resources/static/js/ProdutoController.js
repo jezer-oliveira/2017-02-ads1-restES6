@@ -9,6 +9,7 @@ class ProdutoController {
 
     carregarLista(lista){
         let corpoTabela= document.getElementById("corpoTabela");
+        corpoTabela.innerHTML="";
         for (let i = 0; i < lista.length; i++) {
             let linha= corpoTabela.insertRow();
             
@@ -18,7 +19,26 @@ class ProdutoController {
             let valorCell = linha.insertCell();
             valorCell.innerHTML=lista[i].valor;
             
+            let apagarCell = linha.insertCell();
+            apagarCell.innerHTML=`<button 
+                         onclick="produtoController.apagar(${lista[i].id})">Apagar</button>`;
+
         }
+        
+    }
+    
+    apagar(id){
+        fetch(`produtos/${id}`,{
+            method:"DELETE"
+        }
+        ).then((resposta)=>{
+           if(resposta.ok) {
+               this.listar();
+           } else {
+               console.log("Erro ao apagar");               
+           }
+               
+        } );
         
     }
     
