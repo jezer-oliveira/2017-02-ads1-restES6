@@ -47,6 +47,36 @@ class ProdutoController {
         
     }
     
+    confirmar(){
+        let nome= document.getElementById("nome").value;
+        let valor =document.getElementById("valor").valueAsNumber;
+        
+        let item={
+            nome:nome,
+            valor:valor
+        };
+        
+        this.inserir(item);
+    }
+    
+    inserir(item){
+        fetch("produtos/", {
+            method:"POST",
+            headers: new Headers({
+                'Content-Type': 'application/json'
+               }),
+            body:JSON.stringify(item)
+        }).then((resultado)=>{ 
+            if(resultado.ok){
+                this.listar();
+            } else {
+                console.log("Erro na execução");
+            }
+        
+        });
+        
+    } 
+    
     
     
 }
