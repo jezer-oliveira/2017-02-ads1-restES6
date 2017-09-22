@@ -26,8 +26,31 @@ class ProdutoController {
             apagarCell.innerHTML=`<button 
                          onclick="produtoController.apagar(${lista[i].id})">Apagar</button>`;
 
+            let editarCell = linha.insertCell();
+            editarCell.innerHTML=`<button 
+                         onclick="produtoController.editarItem(${lista[i].id})">Editar</button>`;
         }
         
+    }
+
+    editarItem(id){
+        fetch(`produtos/${id}`,{
+            method:"GET"
+        }).then((resposta) =>{
+            if(resposta.ok){
+                resposta.json().then(
+                        (item)=>{
+                            this.atribuirItem(item);
+                        }
+                        );
+            }
+        } );
+    }
+    
+    atribuirItem(item){
+       document.getElementById("id").value=item.id;
+       document.getElementById("nome").value=item.nome;
+       document.getElementById("valor").value=item.valor;
     }
     
     apagar(id){
@@ -71,15 +94,21 @@ class ProdutoController {
     }
     
     confirmar(){
+        let id = document.getElementById("id").value;
         let nome= document.getElementById("nome").value;
         let valor =document.getElementById("valor").valueAsNumber;
         
         let item={
-            nome:nome,
+             nome:nome,
             valor:valor
         };
-        
-        this.inserir(item);
+        if(id==""){
+         this.inserir(item);
+        } else {
+            this.editar(id,item);
+            
+        }
+            
     }
     
     inserir(item){
