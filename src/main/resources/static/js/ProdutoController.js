@@ -13,6 +13,9 @@ class ProdutoController {
         for (let i = 0; i < lista.length; i++) {
             let linha= corpoTabela.insertRow();
             
+            let idCell= linha.insertCell();
+            idCell.innerHTML=lista[i].id; 
+            
             let nomeCell = linha.insertCell();
             nomeCell.innerHTML=lista[i].nome;
             
