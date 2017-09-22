@@ -16,6 +16,11 @@ and open the template in the editor.
         </script>
     </head>
     <body>
+        <br><br>
+        <label>Pesquisar:</label>
+        <input type="text" oninput="produtoController.pesquisar()" id="pesquisar" />
+      
+        <br><br>
         <table>
             <thead>
                 <tr>
@@ -33,6 +38,7 @@ and open the template in the editor.
         <br><br>
         <label>Valor:</label><input type="number" id="valor"  />
         <br><br>
-        <button type="button" id="confirmar" onclick="produtoController.confirmar()">Confirmar</button> 
+        <button type="button" id="confirmar" onclick="produtoController.confirmar()">Confirmar</button>
+        <button type="button" id="limpar" onclick="produtoController.limpar()">Limpar</button>
     </body>
 </html>
