@@ -8,6 +8,7 @@ package br.edu.ifrs.restinga.ads.jezer.restExemplo.controller;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.dao.ProdutoDAO;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ public class Produtos {
     
     @Autowired
     ProdutoDAO produtoDAO; 
-
+/*
     @RequestMapping(path = "/produtos/pesquisar/nome", method = RequestMethod.GET)
     public Iterable<Produto> pesquisaPorNome(
             @RequestParam(required = false) String igual,
@@ -71,10 +72,13 @@ public class Produtos {
 //produtos/search/nome?l=batata
 
     
+  */
+    
     
     @RequestMapping(path = "/produtos", method = RequestMethod.GET)
-    public Iterable<Produto> listar() {
-        return produtoDAO.findAll();
+    public Iterable<Produto> listar(@RequestParam(required = false , defaultValue = "0" ) int pagina) {
+        PageRequest pageRequest =  new PageRequest(pagina, 5);
+        return produtoDAO.findAll(pageRequest);
     }
 
     

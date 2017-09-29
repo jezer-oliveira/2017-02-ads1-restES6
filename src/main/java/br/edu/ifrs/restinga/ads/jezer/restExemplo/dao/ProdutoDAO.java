@@ -6,8 +6,9 @@
 package br.edu.ifrs.restinga.ads.jezer.restExemplo.dao;
 
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Produto;
-import java.util.List;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -16,17 +17,17 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface ProdutoDAO extends CrudRepository<Produto, Integer>{
+public interface ProdutoDAO extends PagingAndSortingRepository<Produto, Integer>{
     
-    List<Produto> findByNome(String nome);
+    Page<Produto> findByNome(String nome, Pageable pageable);
     
-    List<Produto> findByNomeContainingOrderByNome(String nome);
+    Page<Produto> findByNomeContainingOrderByNome(String nome, Pageable pageable);
     
-    List<Produto> findByMarcas(String marcas);
+    Page<Produto> findByMarcas(String marcas, Pageable pageable);
     
-    List<Produto> findByNomeOrMarcas(String nome, String marca);
+    Page<Produto> findByNomeOrMarcas(String nome, String marca, Pageable pageable);
     
-    List<Produto> findByNomeOrMarcasOrValorLessThan(String nome, String marca, Double valor);
+    Page<Produto> findByNomeOrMarcasOrValorLessThan(String nome, String marca, Double valor, Pageable pageable);
     
-    List<Produto> findByValorLessThan(Double valor);
+    Page<Produto> findByValorLessThan(Double valor, Pageable pageable);
 }
