@@ -11,13 +11,19 @@ package br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo;
  */
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -32,36 +38,20 @@ public class Produto {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     private Date validade;
-
-    @JsonFormat(pattern = "HH:mm:ss")
-    @Temporal(TemporalType.TIME)
-    private Date validade2;
-
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date validade3;
+   
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne
+    @JoinColumn(name = "fornecedor_id")
+    private Fornecedor fornecedor;
     
-    @ElementCollection
-    private List<String> marcas;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OneToMany
+    private List<Modelo> modelos;
     
-
-    public Date getValidade2() {
-        return validade2;
-    }
-
-    public void setValidade2(Date validade2) {
-        this.validade2 = validade2;
-    }
-
-    public Date getValidade3() {
-        return validade3;
-    }
-
-    public void setValidade3(Date validade3) {
-        this.validade3 = validade3;
-    }
-
-    
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany
+    @JoinTable(name = "produto_marca")
+    private List<Marca> marcas;
     
     public Date getValidade() {
         return validade;
@@ -71,14 +61,14 @@ public class Produto {
         this.validade = validade;
     }
 
-    public List<String> getMarcas() {
+    public List<Marca> getMarcas() {
         return marcas;
     }
 
-    public void setMarcas(List<String> marcas) {
+    public void setMarcas(List<Marca> marcas) {
         this.marcas = marcas;
     }
- 
+
     
     
     
@@ -105,4 +95,23 @@ public class Produto {
     public void setValor(double valor) {
         this.valor = valor;
     }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
+    }
+
+    public List<Modelo> getModelos() {
+        return modelos;
+    }
+
+    public void setModelos(List<Modelo> modelos) {
+        this.modelos = modelos;
+    }
+    
+
+    
 }
