@@ -44,11 +44,11 @@ public class Produto {
     @JoinColumn(name = "fornecedor_id")
     private Fornecedor fornecedor;
     
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     @OneToMany
     private List<Modelo> modelos;
     
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "produto_marca")
     private List<Marca> marcas;

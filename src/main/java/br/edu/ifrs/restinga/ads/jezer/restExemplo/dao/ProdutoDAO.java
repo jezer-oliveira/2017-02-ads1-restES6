@@ -30,4 +30,7 @@ public interface ProdutoDAO extends PagingAndSortingRepository<Produto, Integer>
     Page<Produto> findByNomeOrMarcasOrValorLessThan(String nome, String marca, Double valor, Pageable pageable);
     
     Page<Produto> findByValorLessThan(Double valor, Pageable pageable);
+    
+    
+    
 }

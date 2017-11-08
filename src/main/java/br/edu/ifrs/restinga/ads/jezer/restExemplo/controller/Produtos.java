@@ -8,6 +8,7 @@ package br.edu.ifrs.restinga.ads.jezer.restExemplo.controller;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.dao.ProdutoDAO;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Fornecedor;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Marca;
+import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Modelo;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -46,8 +47,20 @@ public class Produtos {
         return produtoDAO.findOne(id).getMarcas();
     }
 
-
+    @RequestMapping(path= "/produtos/{id}/marcas", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public void adicionaMarcas(@PathVariable int id, @RequestBody Marca marca) {
+        Produto findOne = produtoDAO.findOne(id);
+        findOne.getMarcas().add(marca);
+        produtoDAO.save(findOne);
+    }
     
+    
+    @RequestMapping(path= "/produtos/{id}/modelos", method = RequestMethod.GET)
+    public Iterable<Modelo> recuperarModelos(@PathVariable int id) {
+        return produtoDAO.findOne(id).getModelos();
+    }
+
     
     @RequestMapping(path = "/produtos", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

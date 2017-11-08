@@ -6,7 +6,11 @@
 package br.edu.ifrs.restinga.ads.jezer.restExemplo.dao;
 
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Marca;
+import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Produto;
+import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -15,6 +19,10 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface MarcaDAO extends PagingAndSortingRepository<Marca, Integer>{
-    
+public interface MarcaDAO 
+        extends PagingAndSortingRepository<Marca, Integer>{
+        @Query(value = "SELECT produto FROM Produto produto "
+            + "WHERE :marca MEMBER OF produto.marcas")
+    List<Produto> listaProdutosMarca(@Param("marca") Marca marca);
+
 }

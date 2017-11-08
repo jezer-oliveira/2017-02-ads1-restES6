@@ -7,6 +7,7 @@ package br.edu.ifrs.restinga.ads.jezer.restExemplo.controller;
 
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.dao.ModeloDAO;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Modelo;
+import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,8 @@ public class Modelos {
         return modeloSalvo;
     }
 
+    
+    
     @RequestMapping(path = "/modelos/{id}", method = RequestMethod.GET)
     public Modelo recuperar(@PathVariable int id) {
         return modeloDAO.findOne(id);

@@ -7,6 +7,7 @@ package br.edu.ifrs.restinga.ads.jezer.restExemplo.controller;
 
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.dao.MarcaDAO;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Marca;
+import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Produto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -67,4 +68,13 @@ public class Marcas {
         
     }
 
+        @RequestMapping(path = "/marcas/{id}/produtos", method = RequestMethod.GET)
+    public Iterable<Produto> listaProdutosMarca(@PathVariable int id) {
+        Marca marca = marcaDAO.findOne(id);
+        return marcaDAO.listaProdutosMarca(marca);
+    }
+
+
+    
+    
 }

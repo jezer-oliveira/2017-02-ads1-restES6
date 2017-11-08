@@ -1,0 +1,17 @@
+[
+{
+    "nome": "jezer",
+    "cpf":"1265456",
+    "tipo":"fisica"
+},
+    {
+     "nome":"empresa S.A.",
+    "cnpj" :"123546",
+    "tipo":"juridica"
+    },
+    {
+    "nome":"rafael",
+    "tipo":"fisica"
+    }
+    
+]
