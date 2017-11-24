@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author jezer
  */
 @RestController
+@RequestMapping(path = "/api")
 public class Modelos {
     
     @Autowired
