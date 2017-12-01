@@ -9,10 +9,18 @@ import br.edu.ifrs.restinga.ads.jezer.restExemplo.aut.ForbiddenException;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.aut.UsuarioAut;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.dao.UsuarioDAO;
 import br.edu.ifrs.restinga.ads.jezer.restExemplo.modelo.Usuario;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,18 +32,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
  * @author jezer
  */
-
 @RestController
 @RequestMapping(path = "/api")
 public class Usuarios {
 
-    public static final PasswordEncoder 
-            PASSWORD_ENCODER = new BCryptPasswordEncoder();
+    public static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     @RequestMapping(path = "/usuarios", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -43,7 +50,7 @@ public class Usuarios {
         usuario.setId(0);
         usuario.setSenha(PASSWORD_ENCODER.encode(usuario.getNovaSenha()));
 
-        if(usuarioAut==null||!usuarioAut.getUsuario().getPermissoes().contains("administrador")){
+        if (usuarioAut == null || !usuarioAut.getUsuario().getPermissoes().contains("administrador")) {
             ArrayList<String> permissao = new ArrayList<String>();
             permissao.add("usuario");
             usuario.setPermissoes(permissao);
@@ -52,8 +59,6 @@ public class Usuarios {
         return usuarioSalvo;
     }
 
-    
-    
     @Autowired
     UsuarioDAO usuarioDAO;
 
@@ -64,10 +69,9 @@ public class Usuarios {
         return usuarioDAO.findAll(pageRequest);
     }
 
-
     @RequestMapping(path = "/usuarios/{id}", method = RequestMethod.GET)
     public Usuario recuperar(@AuthenticationPrincipal UsuarioAut usuarioAut, @PathVariable int id) {
-        if (usuarioAut.getUsuario().getId() == id 
+        if (usuarioAut.getUsuario().getId() == id
                 || usuarioAut.getUsuario().getPermissoes().contains("administrador")) {
             return usuarioDAO.findOne(id);
         } else {
@@ -91,6 +95,51 @@ public class Usuarios {
             usuarioDAO.delete(id);
         }
 
+    }
+
+
+    @RequestMapping(path = "/usuarios/login", method = RequestMethod.GET)
+    public Usuario login(@AuthenticationPrincipal UsuarioAut usuarioAut) {
+        return usuarioAut.getUsuario();
+    
+    } 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @RequestMapping(path = "/usuarios/{id}/foto", method = RequestMethod.POST)
+    public void inserirFoto(@PathVariable int id, 
+            @RequestParam("arquivo") MultipartFile uploadfiles) {
+        Usuario usuario = usuarioDAO.findOne(id);
+
+        try {
+            usuario.setTipoFoto(uploadfiles.getContentType());
+            usuario.setFoto(uploadfiles.getBytes());
+            usuarioDAO.save(usuario);
+
+        } catch (IOException ex) {
+           ex.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "/usuarios/{id}/foto", method = RequestMethod.GET)
+    public ResponseEntity<InputStreamResource> recuperarFoto(@PathVariable int id)
+            throws IOException {
+        Usuario usuario = usuarioDAO.findOne(id);
+        if (usuario.getFoto() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        HttpHeaders respHeaders = new HttpHeaders();
+        respHeaders.setContentType(MediaType.valueOf(usuario.getTipoFoto()));
+        InputStreamResource img = 
+                new InputStreamResource(new ByteArrayInputStream(usuario.getFoto()));
+        return new ResponseEntity<InputStreamResource>(img, respHeaders, HttpStatus.OK);
     }
 
 }

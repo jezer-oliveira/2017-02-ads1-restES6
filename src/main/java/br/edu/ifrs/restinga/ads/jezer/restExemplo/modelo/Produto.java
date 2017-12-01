@@ -35,6 +35,10 @@ public class Produto {
     private String nome;
     private double valor;
     
+    String tipoFoto;
+    
+    
+    
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
     private Date validade;
@@ -110,6 +114,14 @@ public class Produto {
 
     public void setModelos(List<Modelo> modelos) {
         this.modelos = modelos;
+    }
+
+    public String getTipoFoto() {
+        return tipoFoto;
+    }
+
+    public void setTipoFoto(String tipoFoto) {
+        this.tipoFoto = tipoFoto;
     }
     
 
