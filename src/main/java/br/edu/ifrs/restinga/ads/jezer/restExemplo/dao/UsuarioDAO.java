@@ -12,5 +12,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface UsuarioDAO extends 
         PagingAndSortingRepository<Usuario, Integer>{
     public Usuario findByLogin(String login);
+    public Usuario findByEmail(String email);
     
 }
